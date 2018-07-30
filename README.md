@@ -55,6 +55,12 @@ initial root token.  Be safe out there!
 
 That's all there is to it!
 
+## How do I backup and restore it ?
+
+* Use the [BOSH Backup and Restore][bbr] tool
+  * Be careful, running the "restore" script will restart Vault, requiring an **unseal** operation.
+  * After unsealing the vault for the first time after a restore, the vault will return HTTP 500 errors for about 15 seconds.
+
 ## Using the Vault Service Broker
 
 If you want to deploy the [Vault Service Broker][sb] via BOSH, you
@@ -104,3 +110,4 @@ start up properly, and the deployment as a whole will fail.
 
 [safe]: https://github.com/starkandwayne/safe
 [sb]:   https://github.com/cloudfoundry-community/vault-broker
+[bbr]:  https://docs.cloudfoundry.org/bbr/
