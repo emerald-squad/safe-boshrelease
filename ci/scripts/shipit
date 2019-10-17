@@ -38,6 +38,7 @@ checkenv REPO_OUT       "${REPO_OUT:-}"
 checkenv BRANCH         "${BRANCH:-}"
 checkenv GITHUB_OWNER   "${GITHUB_OWNER:-}"
 checkenv VERSION_FROM   "${VERSION_FROM:-}"
+checkenv AWS_HOST_NAME  "${AWS_HOST_NAME:-}"
 checkenv AWS_ACCESS_KEY "${AWS_ACCESS_KEY:-}"
 checkenv AWS_SECRET_KEY "${AWS_SECRET_KEY:-}"
 checkenv GIT_EMAIL      "${GIT_EMAIL:-}"
@@ -72,6 +73,7 @@ cat > config/private.yml <<YAML
 blobstore:
   provider: s3
   options:
+    host: ${AWS_HOST_NAME}
     access_key_id: ${AWS_ACCESS_KEY}
     secret_access_key: ${AWS_SECRET_KEY}
 YAML

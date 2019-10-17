@@ -38,6 +38,7 @@ checkenv BLOB_NAME        "${BLOB_NAME:-}"
 checkenv BLOB_BINARY      "${BLOB_BINARY:-}"
 checkenv BLOB_CLEANUP     "${BLOB_CLEANUP:-}"
 checkenv BLOB_DESTINATION "${BLOB_DESTINATION:-}"
+checkenv AWS_HOST_NAME    "${AWS_HOST_NAME:-}"
 checkenv AWS_ACCESS_KEY   "${AWS_ACCESS_KEY:-}"
 checkenv AWS_SECRET_KEY   "${AWS_SECRET_KEY:-}"
 if [[ $envok != 0 ]]; then
@@ -57,6 +58,7 @@ cat >config/private.yml <<EOF
 blobstore:
   provider: s3
   options:
+    host: ${AWS_HOST_NAME}
     access_key_id: ${AWS_ACCESS_KEY}
     secret_access_key: ${AWS_SECRET_KEY}
 EOF

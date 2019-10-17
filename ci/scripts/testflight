@@ -37,6 +37,8 @@ checkenv BOSH_CLIENT        "${BOSH_CLIENT:-}"
 checkenv BOSH_CLIENT_SECRET "${BOSH_CLIENT_SECRET:-}"
 checkenv BOSH_DEPLOYMENT    "${BOSH_DEPLOYMENT:-}"
 checkenv MANIFEST_PATH      "${MANIFEST_PATH:-}"
+checkenv AWS_BUCKET_NAME    "${AWS_BUCKET_NAME}"
+checkenv AWS_HOST_NAME      "${AWS_HOST_NAME}"
 checkenv AWS_ACCESS_KEY     "${AWS_ACCESS_KEY:-}"
 checkenv AWS_SECRET_KEY     "${AWS_SECRET_KEY:-}"
 checkenv REPO_ROOT          "${REPO_ROOT:-}"
@@ -67,6 +69,7 @@ cat > config/private.yml <<YAML
 blobstore:
   provider: s3
   options:
+    host: ${AWS_HOST_NAME}
     access_key_id: ${AWS_ACCESS_KEY}
     secret_access_key: ${AWS_SECRET_KEY}
 YAML
