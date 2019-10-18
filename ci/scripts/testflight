@@ -83,6 +83,10 @@ header "Choosing cloud-config options"
 vm_type=$(  bosh int <(bosh cloud-config) --path /vm_types/0/name)
 disk_type=$(bosh int <(bosh cloud-config) --path /disk_types/0/name)
 network=$(  bosh int <(bosh cloud-config) --path /networks/0/name)
+if ! az=$(  bosh int <(bosh cloud-config) --path /networks/0/subnets/0/azs/0)
+then
+  az=$(     bosh int <(bosh cloud-config) --path /networks/0/subnets/0/az)
+fi
 
 release_name=$(bosh int config/final.yml --path /final_name)
 release_version=$(spruce json dev_releases/*/index.yml | jq -r ".builds[].version" | sed -e "s%+.*%%")
@@ -113,8 +117,14 @@ for ig in $(spruce json ${MANIFEST_PATH} | jq -r ".instance_groups[].name"); do
 - type: replace
   path: /instance_groups/name=${ig}/networks
   value: [{name: ${network}}]
-
 EOF
+  if [ -n "$az" ]; then
+    cat <<EOF
+- type: replace
+  path: /instance_groups/name=${ig}/azs?
+  value: [${az}]
+EOF
+  fi
 done
 
 for ig in $(spruce json $MANIFEST_PATH | jq -r ".instance_groups[] | select(.persistent_disk_type).name"); do
