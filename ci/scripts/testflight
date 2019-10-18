@@ -142,14 +142,42 @@ done) > overrides.yml
 header "Deploying to ${BOSH_ENVIRONMENT}..."
 bosh -n deploy $MANIFEST_PATH -o overrides.yml
 
-######
-######
-######
-if [[ -n ${TEST_ERRAND:-} ]]; then
-  header "Running '${TEST_ERRAND}' errand"
-  bosh -n run-errand ${TEST_ERRAND}
-fi
+header "Running tests"
+safe target https://$(bosh instances --json| jq -r '.Tables[].Rows[0].ips') test -k
+init=$(safe init --json)
+token=$(jq -r '.root_token' <<< "$init")
+keys=$(jq -r '.seal_keys[]' <<< "$init")
+value="testvalue"
+safe set secret/test value=$value
+[ "$(safe get secret/test:value)" == "$value" ]
 
+header "Testing BBR backup"
+wget https://github.com/cloudfoundry-incubator/bosh-backup-and-restore/releases/download/v1.5.2/bbr-1.5.2-linux-amd64 -O bbr
+chmod +x bbr
+mkdir backup
+./bbr deployment backup --artifact-path backup
+bosh -n delete-deployment --force
+
+header "Testing BBR restore"
+bosh -n deploy $MANIFEST_PATH -o overrides.yml
+./bbr deployment restore --artifact-path backup/*
+
+header "Unsealing restored safe"
+(
+export VAULT_SKIP_VERIFY=1
+for server in $(bosh instances --json| jq -r '.Tables[].Rows[].ips'); do
+  export VAULT_ADDR="https://$server"
+  for key in $keys; do
+    vault operator unseal "$key"
+  done
+done
+)
+sleep 60
+set -x
+safe target https://$(bosh instances --json| jq -r '.Tables[].Rows[0].ips') test -k
+safe auth token <<< "$token"
+[ "$(safe get secret/test:value)" == "$value" ]
+set +x
 ######
 ######
 ######
