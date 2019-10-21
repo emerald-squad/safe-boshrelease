@@ -143,6 +143,7 @@ header "Deploying to ${BOSH_ENVIRONMENT}..."
 bosh -n deploy $MANIFEST_PATH -o overrides.yml
 
 header "Running tests"
+set -x
 safe target https://$(bosh instances --json| jq -r '.Tables[].Rows[0].ips') test -k
 init=$(safe init --json)
 token=$(jq -r '.root_token' <<< "$init")
@@ -151,18 +152,26 @@ value="testvalue"
 safe set secret/test value=$value
 [ "$(safe get secret/test:value)" == "$value" ]
 
+set +x
 header "Testing BBR backup"
+set -x
 wget https://github.com/cloudfoundry-incubator/bosh-backup-and-restore/releases/download/v1.5.2/bbr-1.5.2-linux-amd64 -O bbr
 chmod +x bbr
 mkdir backup
 ./bbr deployment backup --artifact-path backup
 bosh -n delete-deployment --force
 
+set +x
 header "Testing BBR restore"
+set -x
+
 bosh -n deploy $MANIFEST_PATH -o overrides.yml
 ./bbr deployment restore --artifact-path backup/*
 
+set +x
 header "Unsealing restored safe"
+set -x
+
 (
 export VAULT_SKIP_VERIFY=1
 for server in $(bosh instances --json| jq -r '.Tables[].Rows[].ips'); do
@@ -173,7 +182,7 @@ for server in $(bosh instances --json| jq -r '.Tables[].Rows[].ips'); do
 done
 )
 sleep 60
-set -x
+
 safe target https://$(bosh instances --json| jq -r '.Tables[].Rows[0].ips') test -k
 safe auth token <<< "$token"
 [ "$(safe get secret/test:value)" == "$value" ]
