@@ -39,6 +39,7 @@ case $1 in
     chpst -u vcap:vcap \
       /var/vcap/packages/consul/bin/consul agent \
          -config-file ${JOB_DIR}/config/consul.conf \
+         -config-format json \
          -data-dir ${DAT_DIR}/consul \
          -pid-file $PIDFILE
     ;;
