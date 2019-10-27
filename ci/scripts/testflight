@@ -106,6 +106,14 @@ header "Generating ops-file overrides"
   value:
     name: ${release_name}
     version: ${release_version}.latest
+
+- type: replace
+  path: /update/max_in_flight
+  value: 3
+
+- type: replace
+  path: /update/serial
+  value: false
 EOF
 
 for ig in $(spruce json ${MANIFEST_PATH} | jq -r ".instance_groups[].name"); do
