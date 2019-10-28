@@ -1,0 +1,50 @@
+name: safe
+version: 1.0.0
+commit_hash: 876bded
+uncommitted_changes: false
+jobs:
+- name: broker
+  version: c0b72881ec3ccba7d831c40dbb3478282d88fceb51494e8d484b40688d92c9fa
+  fingerprint: c0b72881ec3ccba7d831c40dbb3478282d88fceb51494e8d484b40688d92c9fa
+  sha1: sha256:10aa6ada6332de8558a7c4c70b4b8c7b8fcceac4cf86d39913767dd57fc76e4b
+  packages:
+  - vault-broker
+- name: vault
+  version: 5274ef86ed29680d0a630538bcea9b98430e5f2ec14eebb7acd5318633fcdc2e
+  fingerprint: 5274ef86ed29680d0a630538bcea9b98430e5f2ec14eebb7acd5318633fcdc2e
+  sha1: sha256:da2fa1c98ed5d191076c956052cf308a59a67d3e9a4b84735faf11fbc94ac71f
+  packages:
+  - consul
+  - vault
+  - certifier
+  - strongbox
+packages:
+- name: certifier
+  version: e7a58f20125801d40652e299952ee36f3fb10d9d9cbfcb35158b493fc52ad79d
+  fingerprint: e7a58f20125801d40652e299952ee36f3fb10d9d9cbfcb35158b493fc52ad79d
+  sha1: sha256:1e7ae6dbf09185cd5bec9a69c22638cbaaedd6a8f9261d808c81aa7d6a4ee979
+  dependencies: []
+- name: consul
+  version: dcd2891922adda8568a287d9a65894a0ba122ac41b0a70e985beca6077982867
+  fingerprint: dcd2891922adda8568a287d9a65894a0ba122ac41b0a70e985beca6077982867
+  sha1: sha256:0648e4113368ba85e3c9fb8f94b2c6cf9d026ec8530b25dcda695e5d92c1e120
+  dependencies: []
+- name: strongbox
+  version: 8d8c0805cc641ef7f428dbe40ea4cf7a9dac90bd92c099af7eba8b2dd370c7d6
+  fingerprint: 8d8c0805cc641ef7f428dbe40ea4cf7a9dac90bd92c099af7eba8b2dd370c7d6
+  sha1: sha256:b695184bd58ce5bf99b52390b14201219fe677fed05b9e4114ea979c03c61c2d
+  dependencies: []
+- name: vault
+  version: 546ac65a41d9417137f1a3e4c8bce65189e482c2ac3010f1e5c88047710e6dcf
+  fingerprint: 546ac65a41d9417137f1a3e4c8bce65189e482c2ac3010f1e5c88047710e6dcf
+  sha1: sha256:b1bafba25ef3e5a9e01423052b5c5248ed2067795d532347024a2968675c3f5e
+  dependencies: []
+- name: vault-broker
+  version: f9dbc937531fba5066e1163702fe346613df068fb9aa44e3b1ee92e4763eecef
+  fingerprint: f9dbc937531fba5066e1163702fe346613df068fb9aa44e3b1ee92e4763eecef
+  sha1: sha256:2645511dbd9db59e55bd78f617481a94fbc3d4a4a14345f9b20ff7f53b34b504
+  dependencies: []
+license:
+  version: 16e4c2be65fa47859c0a2f40863170aba8a4b005b074e5be267b855b01907b6b
+  fingerprint: 16e4c2be65fa47859c0a2f40863170aba8a4b005b074e5be267b855b01907b6b
+  sha1: sha256:093d2a6149ba826882db94d4215d8ee1ed353cf9b3735d6a5df93cb25ecd7a56
