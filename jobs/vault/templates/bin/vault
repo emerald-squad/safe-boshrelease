@@ -8,6 +8,8 @@ PIDFILE=$RUN_DIR/vault.pid
 mkdir -p $LOG_DIR $RUN_DIR
 exec >>$LOG_DIR/vault.log 2>&1
 
+source "$JOB_DIR/bin/helper.sh"
+
 case $1 in
   start)
     if [[ -f $PIDFILE ]]; then
@@ -41,10 +43,7 @@ case $1 in
     ;;
 
   stop)
-    PID=$(head -1 $PIDFILE)
-    kill $PID
-    while [ -e /proc/$PID ]; do sleep 0.1; done
-    rm -f $PIDFILE
+    kill_pidfile $PIDFILE
     ;;
 
   *)
