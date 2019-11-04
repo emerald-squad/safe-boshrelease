@@ -1,1 +1,0 @@
-- Correcting bug on consul stop
