@@ -4,7 +4,7 @@ consul/consul_1.6.1_linux_amd64.zip:
   sha: d7e863e068ddde88da690b32f3b97aae9cce3ce8
 strongbox/strongbox:
   size: 6420275
-  object_id: 213b52e3-d66a-4113-40f0-29715788044f
+  object_id: b5cdf99e-405a-405e-5219-ba22679f657f
   sha: sha256:05fc2370a135795b88e0e77d5348d966367287b84f436cc3b1317d54512dbed0
 vault-broker/vault-broker:
   size: 7100965
