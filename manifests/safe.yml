@@ -1,8 +1,27 @@
 name: safe
 
 instance_groups:
-  - name:      vault
+  - name:      consul
     instances: 3
+    azs:       [z1]
+    vm_type:   default
+    stemcell:  default
+
+    persistent_disk_type: default
+
+    networks:
+      - name: default
+
+    jobs:
+      - name: consul-server
+        release: safe
+        properties:
+          tls:
+            ca: ((consul_ca.certificate))
+            key: ((consul_ca.private_key))
+
+  - name:      vault
+    instances: 2
     azs:       [z1]
     vm_type:   default
     stemcell:  default
@@ -15,14 +34,45 @@ instance_groups:
       - name: default
 
     jobs:
+      - name: consul-client
+        release: safe
+        properties:
+          tls:
+            certificate: ((client_cert.certificate))
+            key: ((client_cert.private_key))
       - name: vault
         release: safe
         properties:
-          safe:
-            peer:
-              tls:
-                verify: false
+          tls:
+            internal:
+              certificate: ((vault_cert.certificate))
+              key: ((vault_cert.private_key))
 
+variables:
+- name: consul_ca
+  type: certificate
+  options:
+    common_name: ca
+    is_ca: true
+    duration: 3650
+- name: client_cert
+  type: certificate
+  options:
+    common_name: client.safe.consul
+    alternative_names:
+    - client.safe.consul
+    - localhost
+    - 127.0.0.1
+    ca: consul_ca
+- name: vault_cert
+  type: certificate
+  options: 
+    common_name: vault.service.consul
+    alternative_names:
+      - active.vault.service.consul
+      - standby.vault.service.consul
+      - vault.service.consul
+    ca: consul_ca
 
 update:
   canaries:          0

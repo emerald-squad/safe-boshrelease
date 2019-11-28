@@ -1,0 +1,58 @@
+#!/bin/bash
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/consul-client
+LOG_DIR=/var/vcap/sys/log/consul-client
+JOB_DIR=/var/vcap/jobs/consul-client
+DAT_DIR=/var/vcap/store/consul-client
+PIDFILE=$RUN_DIR/consul.pid
+mkdir -p $LOG_DIR
+exec >>$LOG_DIR/consul.log 2>&1
+
+case $1 in
+  start)
+    mkdir -p $RUN_DIR $DAT_DIR
+    chown vcap:vcap $DAT_DIR $RUN_DIR
+
+    if [[ -f $PIDFILE ]]; then
+      PID=$(head -1 $PIDFILE)
+      test -n "$PID" && test -e /proc/$PID && exit 1
+      rm -f $PIDFILE
+    fi
+
+    ulimit -v unlimited
+    setcap cap_net_bind_service=+ep $(readlink -nf /var/vcap/packages/consul/bin/consul)
+
+    # set up a place to store consul serf/raft data
+    mkdir -p ${DAT_DIR}/consul
+    chown vcap:vcap ${DAT_DIR}/consul
+
+    # run consul
+    GOMAXPROCS=2 \
+    chpst -u vcap:vcap \
+      /var/vcap/packages/consul/bin/consul agent \
+         -config-file ${JOB_DIR}/config/consul.conf \
+         -config-format json \
+         -data-dir ${DAT_DIR}/consul \
+         -pid-file $PIDFILE
+    ;;
+
+  stop)
+<% if not link('cluster').p('tls.ca', '').empty? then %>
+    export CONSUL_HTTP_SSL=true
+    export CONSUL_HTTP_SSL_VERIFY=false
+    export CONSUL_HTTP_ADDR=127.0.0.1:8501
+<% end %>
+    /var/vcap/packages/consul/bin/consul leave
+    ;;
+
+  reload)
+    echo "Reloading consul configuration..."
+    kill -SIGHUP $(cat $PIDFILE)
+    ;;
+
+  *)
+    echo "Usage: consul {start|stop}"
+    ;;
+esac
+exit 0

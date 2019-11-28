@@ -16,7 +16,7 @@ provides:
 
 consumes:
   - name: vault
-    type: cluster
+    type: vault
 
 properties:
   guid:

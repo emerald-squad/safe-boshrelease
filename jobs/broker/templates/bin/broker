@@ -31,7 +31,7 @@ case $1 in
     export VAULT_ADDR="<%= address %>"
     <% end.else do %>
       VAULT_IP=<%= link('vault').instances[0].address %>
-      VAULT_PORT=<%= link('vault').p('safe.port', 443) %>
+      VAULT_PORT=<%= link('vault').p('port', 443) %>
       export VAULT_ADDR="https://${VAULT_IP}:${VAULT_PORT}"
     <% end %>
     export VAULT_ADVERTISE_ADDR="<%= p('backend.advertise') %>"

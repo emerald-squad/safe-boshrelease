@@ -1,0 +1,5 @@
+check process consul
+  with pidfile  /var/vcap/sys/run/consul-server/consul.pid
+  start program "/var/vcap/jobs/consul-server/bin/consul start"
+  stop  program "/var/vcap/jobs/consul-server/bin/consul stop"
+  group vcap

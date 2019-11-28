@@ -22,9 +22,9 @@ case $1 in
     exec chpst -u vcap:vcap \
       /var/vcap/packages/strongbox/bin/strongbox \
          --bind :8484 \
-         --ca-certificate ${JOB_DIR}/tls/peer/ca.pem \
-         <% if !p('safe.peer.tls.verify') %>--no-verify <% end %> \
-         --consul https://127.0.0.1:8500
+         --no-verify \
+         --ca-certificate ${JOB_DIR}/tls/internal/ca.pem \
+         --consul https://127.0.0.1:8501
     ;;
 
   stop)

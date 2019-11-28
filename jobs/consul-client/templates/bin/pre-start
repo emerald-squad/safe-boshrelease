@@ -1,0 +1,20 @@
+#!/bin/bash
+
+ORIGIN=/var/vcap/jobs/consul-client/tls/ca.pem
+DEST=/usr/local/share/ca-certificates/consul_ca.crt
+
+if ! diff -q "$ORIGIN" "$DEST"; then
+   cp -f "$ORIGIN" "$DEST"
+
+   updated_certs=1
+   retry_count=0
+   max_retry_count=3
+
+   until [ $updated_certs -eq 0 ] || [ $retry_count -ge $max_retry_count ]; do
+     echo "trying to run update-ca-certificates..."
+     timeout --signal=KILL 60s /usr/sbin/update-ca-certificates -f -v
+     updated_certs=$?
+     retry_count=$((retry_count + 1))
+   done
+
+fi

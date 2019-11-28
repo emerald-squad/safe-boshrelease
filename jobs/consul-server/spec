@@ -1,0 +1,54 @@
+---
+name: consul-server
+
+templates:
+  bin/consul: bin/consul
+  bin/pre-start: bin/pre-start
+  config/consul.conf: config/consul.conf
+
+  tls/ca.pem: tls/ca.pem
+  tls/key.pem: tls/key.pem
+
+  pre-restore-lock.sh.erb: bin/bbr/pre-restore-lock
+  post-restore-unlock.sh.erb: bin/bbr/post-restore-unlock
+  backup.sh.erb: bin/bbr/backup
+  restore.sh.erb: bin/bbr/restore
+
+packages:
+- consul
+
+provides:
+- name: consul-server
+  type: consul-cluster
+  properties:
+  - tls.ca
+  - tls.verify_incoming
+  - tls.verify_outgoing
+
+consumes:
+- name: cluster
+  type: consul-cluster
+
+properties:
+  force_bind_default_ip:
+    description: |
+      Forces Consul agent to bind to the default ip address, necessary when using non
+      RFC1918 space in a private context.
+    default: false
+
+  tls.ca:
+    description: |
+      TLS CA certificate to use for verifying peer-to-peer communication.
+      If not provided, the consul nodes will not use TLS for peer-to-peer communication
+
+  tls.key:
+    description: |
+      The key of the CA certificate.
+
+  tls.verify_incoming:
+    description: Verify TLS certificate from other consul agents
+    default: true
+
+  tls.verify_outgoing:
+    description: Presents a TLS certificate to other consul agents
+    default: true

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+<% if_p("tls.ca") do |ca| %>
+# Creating certificates if needed
+JOB_DIR=/var/vcap/jobs/consul-server
+DAT_DIR=/var/vcap/store/consul-server
+
+if [ -f "$DAT_DIR/tls/cert.pem" ] && [ -f "$DAT_DIR/tls/key.pem" ] \
+   && openssl verify -CAfile "$JOB_DIR/tls/ca.pem"  "$DAT_DIR/tls/cert.pem"; then
+
+   exit 0
+fi
+
+mkdir -p "$DAT_DIR/tls"
+pushd "$DAT_DIR/tls"
+
+/var/vcap/packages/consul/bin/consul tls cert create \
+				     -server \
+				     -days=3650 \
+				     -ca="$JOB_DIR/tls/ca.pem" \
+				     -key="$JOB_DIR/tls/key.pem" \
+				     -dc="vault" \
+				     -domain="consul"
+mv -f vault-server-consul-*-key.pem key.pem
+mv -f vault-server-consul-*.pem cert.pem
+
+popd
+
+<% end %>

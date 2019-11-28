@@ -1,0 +1,29 @@
+---
+name: consul-client
+
+templates:
+  bin/consul: bin/consul
+  bin/pre-start: bin/pre-start
+  config/consul.conf: config/consul.conf
+
+  dns/handlers.json: dns/handlers.json
+
+  tls/ca.pem: tls/ca.pem
+  tls/cert.pem: tls/cert.pem
+  tls/key.pem: tls/key.pem
+
+packages:
+- consul
+
+consumes:
+- name: cluster
+  type: consul-cluster
+
+properties:
+  tls.certificate:
+    description: |
+      The consul client certificate, must be signed by the consul server cluster CA and valid for the addresses client.safe.consul, localhost and 127.0.0.1.
+      If not provided, the client will get a certificate from a consul server using auto_encrypt
+  tls.key:
+    description: |
+      The key to the certificate.
