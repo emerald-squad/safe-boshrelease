@@ -18,10 +18,11 @@ case $1 in
       rm -f $PIDFILE
     fi
 
+    
     bin=$(readlink -nf /var/vcap/packages/vault/bin/vault)
-    setcap cap_ipc_lock=+ep         $bin
-    setcap cap_net_bind_service=+ep $bin
+    setcap "cap_ipc_lock=+ep cap_net_bind_service=+ep"  "$bin"
 
+    
     echo $$ > $PIDFILE
     exec chpst -u vcap:vcap \
       /var/vcap/packages/vault/bin/vault server \
