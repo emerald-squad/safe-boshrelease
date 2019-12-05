@@ -152,8 +152,8 @@ bosh -n deploy $MANIFEST_PATH -o overrides.yml
 
 header "Running tests"
 set -x
-safe target https://$(bosh instances --json| jq -r '.Tables[].Rows[0].ips') test -k
-init=$(safe init --json)
+safe target https://$(bosh instances --json| jq -r '.Tables[].Rows | map(select(.instance | startswith("vault")))|.[0].ips'):8200 test -k
+init=$(safe init --single --json)
 token=$(jq -r '.root_token' <<< "$init")
 keys=$(jq -r '.seal_keys[]' <<< "$init")
 value="testvalue"
