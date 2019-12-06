@@ -182,7 +182,7 @@ set -x
 
 (
 export VAULT_SKIP_VERIFY=1
-for server in $(bosh instances --json| jq -r '.Tables[].Rows | map(select(.instance | startswith("vault")))|.[0].ips'); do
+for server in $(bosh instances --json| jq -r '.Tables[].Rows | map(select(.instance | startswith("vault")))|.[].ips'); do
   export VAULT_ADDR="https://$server:8200"
   for key in $keys; do
     vault operator unseal "$key"
