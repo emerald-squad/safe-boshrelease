@@ -20,8 +20,6 @@ provides:
   type: consul-cluster
   properties:
   - tls.ca
-  - tls.verify_incoming
-  - tls.verify_outgoing
 
 consumes:
 - name: cluster
@@ -43,10 +41,3 @@ properties:
     description: |
       The key of the CA certificate.
 
-  tls.verify_incoming:
-    description: Verify TLS certificate from other consul agents
-    default: true
-
-  tls.verify_outgoing:
-    description: Presents a TLS certificate to other consul agents
-    default: true

@@ -4,6 +4,7 @@
   export CONSUL_HTTP_ADDR=127.0.0.1:8501
   export CONSUL_CACERT=/var/vcap/jobs/consul-server/tls/ca.pem
   export CONSUL_CLIENT_CERT=/var/vcap/store/consul-server/tls/cert.pem
+  export CONSUL_CLIENT_KEY=/var/vcap/store/consul-server/tls/key.pem
 <% end %>
 
 BBR_ARTIFACT_FILE_PATH="${BBR_ARTIFACT_DIRECTORY}/consul.snap"

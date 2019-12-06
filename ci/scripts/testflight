@@ -189,7 +189,7 @@ for server in $(bosh instances --json| jq -r '.Tables[].Rows[].ips'); do
   done
 done
 )
-sleep 60
+sleep 300
 
 safe target https://$(bosh instances --json| jq -r '.Tables[].Rows[0].ips') test -k
 safe auth token <<< "$token"
