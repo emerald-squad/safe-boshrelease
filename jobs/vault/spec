@@ -18,6 +18,9 @@ templates:
   tls/internal/cert.pem: tls/internal/cert.pem
   tls/internal/key.pem: tls/internal/key.pem
 
+  pre-restore-lock.sh.erb: bin/bbr/pre-restore-lock
+  post-restore-unlock.sh.erb: bin/bbr/post-restore-unlock
+
 provides:
 - name: vault
   type: vault

@@ -9,8 +9,6 @@ templates:
   tls/ca.pem: tls/ca.pem
   tls/key.pem: tls/key.pem
 
-  pre-restore-lock.sh.erb: bin/bbr/pre-restore-lock
-  post-restore-unlock.sh.erb: bin/bbr/post-restore-unlock
   backup.sh.erb: bin/bbr/backup
   restore.sh.erb: bin/bbr/restore
 
