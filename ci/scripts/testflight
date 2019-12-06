@@ -182,16 +182,17 @@ set -x
 
 (
 export VAULT_SKIP_VERIFY=1
-for server in $(bosh instances --json| jq -r '.Tables[].Rows[].ips'); do
-  export VAULT_ADDR="https://$server"
+for server in $(bosh instances --json| jq -r '.Tables[].Rows | map(select(.instance | startswith("vault")))|.[0].ips'); do
+  export VAULT_ADDR="https://$server:8200"
   for key in $keys; do
     vault operator unseal "$key"
   done
 done
 )
-sleep 300
 
-safe target https://$(bosh instances --json| jq -r '.Tables[].Rows[0].ips') test -k
+sleep 60
+export vault_ip=$(bosh instances --json| jq -r '.Tables[].Rows | map(select(.instance | startswith("vault")))|.[0].ips')
+safe target "https://$vault_ip:8200" test -k
 safe auth token <<< "$token"
 [ "$(safe get secret/test:value)" == "$value" ]
 set +x
