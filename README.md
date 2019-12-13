@@ -4,6 +4,9 @@ Vault is a secure credentials storage system from Hashicorp.
 
 It stands up a multi-homed Vault with Consul as a storage backend.
 
+This particular BOSH release is a fork maintained by emerald-squad,
+because it looks like the original has been abandonned.
+
 ## But Why Not Use The Vault BOSH Release?
 
 I have, and I do.  But it provides way more option than the
@@ -20,7 +23,7 @@ with this BOSH release.
 ## How Do I Deploy It?
 
 A sample manifest is available at `manifests/safe.yml`; it has
-everything you need to run a 3-node Vault.
+everything you need to run a 2-node Vault on a 5-node Consul cluster
 
 ```
 bosh -e your-bosh-director -d safe deploy manifests/safe.yml
@@ -58,6 +61,38 @@ release now ships with Vault 1.0.2, and `safe init` from earlier
 versions are known to not work.
 
 That's all there is to it!
+
+## How do I use vault with another BOSH deployment ?
+
+The consul-client add consul DNS as a handler for BOSH DNS, allowing you to join your currently active node with the special address `https://active.vault.service.consul:8200`.
+
+To use it on another deployment, you need to add a consul-client job on the instance_group where you need to access vault and link it with the consul cluster on your safe deployment :
+
+```
+    jobs:
+      - name: consul-client
+        release: safe
+        consumes:
+          cluster:
+            from: consul-server
+            deployment: safe
+```
+
+## Adding a token to for step-down
+
+During the drain of vault, an optional operation will run a step-down on the current vault node and allow another node to take leadership. This can reduce the duration of the interruption of service during an upgrade or restart.
+
+To do that, you will need to create a token with a policy that allows this operation. A policy that does exacly that is located in the utils directory.
+
+```
+# Create a policy called step-down
+vault policy write step-down utils/step-down-policy.hcl
+
+# Create a token with the step-down policy
+vault policy write step-down utils/step-down-policy.hcl
+```
+
+Next, you will need to redeploy and add the `step-down.yml` ops file, providing the token as a variable by the method of your choice. This will enable the step-down operation and will add a crontab entry to renew the periodc token every 5 minutes. 
 
 ## How do I backup and restore it ?
 

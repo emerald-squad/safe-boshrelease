@@ -2,7 +2,7 @@ name: safe
 
 instance_groups:
   - name:      consul
-    instances: 3
+    instances: 5
     azs:       [z1]
     vm_type:   default
     stemcell:  default
@@ -15,6 +15,9 @@ instance_groups:
     jobs:
       - name: consul-server
         release: safe
+        provides:
+          consul-server:
+            shared: true
         properties:
           tls:
             ca: ((consul_ca.certificate))
@@ -72,6 +75,7 @@ variables:
       - active.vault.service.consul
       - standby.vault.service.consul
       - vault.service.consul
+      - 127.0.0.1
     ca: consul_ca
 
 update:

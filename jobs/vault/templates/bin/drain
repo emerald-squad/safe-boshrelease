@@ -1,0 +1,23 @@
+#!/bin/bash
+
+here="<%= spec.ip %>"
+timeout=<%= p('drain.timeout', 60) %>
+step=5
+
+elapsed=0
+while ! (curl -s http://127.0.0.1:8484/strongbox | sed 's/[{}"]//g; s/,/\n/g'|grep -v "$here" | grep -q unsealed); do
+  sleep "$step"
+  elapsed=$(( elapsed + step ))
+  if [ "$elapsed" -gt "$timeout" ]; then
+    break
+  fi
+done
+
+<% if_p("drain.token") do |token| %>
+curl \
+    --header "X-Vault-Token: <%= token %>" \
+    --request PUT \
+    https://127.0.0.1:8200/v1/sys/step-down
+<% end %>
+echo 0;
+exit 0;

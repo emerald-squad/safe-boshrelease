@@ -8,6 +8,7 @@ templates:
   bin/vault: bin/vault
   bin/strongbox: bin/strongbox
   bin/helper.sh: bin/helper.sh
+  bin/drain: bin/drain
 
   config/vault.conf: config/vault.conf
 
@@ -53,3 +54,10 @@ properties:
   disable_mlock:
     description: Disable mlock system calls, this will decrease the vault security ansd should only be used in non-production envirnment, for testing purposes.
     default: false
+
+  drain.timeout:
+    description: While stopping a vault node, we will wait this ammount of seconds for another node to be unsealed and ready to take over the lead
+    default: 60
+
+  drain.token:
+    description: A token used to make a vault node step down as a leader. Idealy this token should only have write permission on /sys/step-down
