@@ -78,7 +78,7 @@ To use it on another deployment, you need to add a consul-client job on the inst
             deployment: safe
 ```
 
-## Adding a token to for step-down
+## Adding a token for step-down
 
 During the drain of vault, an optional operation will run a step-down on the current vault node and allow another node to take leadership. This can reduce the duration of the interruption of service during an upgrade or restart.
 
@@ -89,7 +89,7 @@ To do that, you will need to create a token with a policy that allows this opera
 vault policy write step-down utils/step-down-policy.hcl
 
 # Create a token with the step-down policy
-vault policy write step-down utils/step-down-policy.hcl
+vault token create -policy=step-down -period=1h -orphan
 ```
 
 Next, you will need to redeploy and add the `step-down.yml` ops file, providing the token as a variable by the method of your choice. This will enable the step-down operation and will add a crontab entry to renew the periodc token every 5 minutes. 
