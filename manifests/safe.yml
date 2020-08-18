@@ -2,7 +2,7 @@ name: safe
 
 instance_groups:
   - name:      consul
-    instances: 5
+    instances: 3
     azs:       [z1]
     vm_type:   default
     stemcell:  default

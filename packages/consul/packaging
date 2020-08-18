@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eu
 
-VERSION=1.6.2
-# from https://releases.hashicorp.com/consul/1.6.1/consul_1.6.1_linux_amd64.zip
+VERSION=1.8.0
+# from https://releases.hashicorp.com/consul/1.6.1/consul_1.8.0_linux_amd64.zip
 cd consul
 unzip consul_${VERSION}_linux_amd64.zip
 mkdir -p  ${BOSH_INSTALL_TARGET}/bin
