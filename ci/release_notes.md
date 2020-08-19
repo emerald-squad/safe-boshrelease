@@ -1,2 +1,0 @@
-- Upgrade vault to v1.5.0
-- Upgrade consul to v1.8.0
