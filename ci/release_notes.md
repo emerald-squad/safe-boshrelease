@@ -1,0 +1,1 @@
+Making sure vault drain script doesn't fail if the token has expired

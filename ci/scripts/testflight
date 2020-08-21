@@ -12,9 +12,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 header() {
   echo
   echo "###############################################"
-  echo
-  echo $*
-  echo
+  echo "#"
+  echo "# $*"
+  echo "#"
 }
 
 ######
@@ -148,7 +148,9 @@ done) > overrides.yml
 ######
 ######
 header "Deploying to ${BOSH_ENVIRONMENT}..."
-bosh -n deploy $MANIFEST_PATH -o overrides.yml
+bosh -n deploy $MANIFEST_PATH -o overrides.yml \
+     -o manifests/ops/step-down.yml \
+     -v vault_step_down_token="faketoken" # We put a non-valid token for two reasons: 1- We haven't created it yet 2- We want to check that the drain doesn't fail
 
 header "Running tests"
 set -x
@@ -159,6 +161,13 @@ keys=$(jq -r '.seal_keys[]' <<< "$init")
 value="testvalue"
 safe set secret/test value=$value
 [ "$(safe get secret/test:value)" == "$value" ]
+
+set +x
+header "Creating drain token"
+set -x
+
+safe vault policy write step-down utils/step-down-policy.hcl
+step_down_token=$(safe vault token create -period=2h -orphan -policy=step-down -format=json | jq -r '.auth.client_token')
 
 set +x
 header "Testing BBR backup"
@@ -173,7 +182,9 @@ set +x
 header "Testing BBR restore"
 set -x
 
-bosh -n deploy $MANIFEST_PATH -o overrides.yml
+bosh -n deploy $MANIFEST_PATH -o overrides.yml\
+     -o manifests/ops/step-down.yml \
+     -v vault_step_down_token="$step_down_token" 
 ./bbr deployment restore --artifact-path backup/*
 
 set +x
