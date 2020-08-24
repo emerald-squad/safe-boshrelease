@@ -1,0 +1,55 @@
+name: safe
+version: 1.2.1
+commit_hash: 54f46fe
+uncommitted_changes: false
+jobs:
+- name: broker
+  version: 63bb85e7a9584fcba8402523ce4fd27ff5b699d7134e9763d4ec5d6c1df541de
+  fingerprint: 63bb85e7a9584fcba8402523ce4fd27ff5b699d7134e9763d4ec5d6c1df541de
+  sha1: sha256:65f0f160d49671e571db6af692ef0b394f5d6ff1e5dafa13b42972683d29e0a5
+  packages:
+  - vault-broker
+- name: consul-client
+  version: bd392a9e8f7b64697a1260125a567362264a4ac80038a6d1b2c650ac6b1c6223
+  fingerprint: bd392a9e8f7b64697a1260125a567362264a4ac80038a6d1b2c650ac6b1c6223
+  sha1: sha256:d6926a3d3899a7f1b91c542e078520a57b7afa7fc036b27ec54ee029d5b53e4a
+  packages:
+  - consul
+- name: consul-server
+  version: a446bf0f146f8c0bbcbfb4ba36d717c76709baaeb3817ece63bc49d27634aa6e
+  fingerprint: a446bf0f146f8c0bbcbfb4ba36d717c76709baaeb3817ece63bc49d27634aa6e
+  sha1: sha256:19c04fdbbb246cc302c4780ee8cdeed61b8cc1c3233fedb14ff186164f88603d
+  packages:
+  - consul
+- name: vault
+  version: 73b39dff9fec8deb2e92b7fb72b1f9af41a8771fcbe66ac08c5a41f17b7b8208
+  fingerprint: 73b39dff9fec8deb2e92b7fb72b1f9af41a8771fcbe66ac08c5a41f17b7b8208
+  sha1: sha256:2f05c55e352c25479dc7ddc32ff205e669ff7e4b7afb26b7650351608a545502
+  packages:
+  - vault
+  - strongbox
+packages:
+- name: consul
+  version: 26f29a0056852e2a3ef0cce328d0e541c9603386a5f477aa9010dbb21c37ee14
+  fingerprint: 26f29a0056852e2a3ef0cce328d0e541c9603386a5f477aa9010dbb21c37ee14
+  sha1: sha256:77511f637df161e5ab044d700ee4b37f9009cdae251fd33d13af0cf68bab17c6
+  dependencies: []
+- name: strongbox
+  version: 8d8c0805cc641ef7f428dbe40ea4cf7a9dac90bd92c099af7eba8b2dd370c7d6
+  fingerprint: 8d8c0805cc641ef7f428dbe40ea4cf7a9dac90bd92c099af7eba8b2dd370c7d6
+  sha1: sha256:b695184bd58ce5bf99b52390b14201219fe677fed05b9e4114ea979c03c61c2d
+  dependencies: []
+- name: vault
+  version: 5e78d3e1b6778751488582de77248c337fa68e394cd35c2b11404a5ce4a15ddd
+  fingerprint: 5e78d3e1b6778751488582de77248c337fa68e394cd35c2b11404a5ce4a15ddd
+  sha1: sha256:45ccd99216105df4878ccede9c1b106251343c3d48f860f45d83230861a549a0
+  dependencies: []
+- name: vault-broker
+  version: f9dbc937531fba5066e1163702fe346613df068fb9aa44e3b1ee92e4763eecef
+  fingerprint: f9dbc937531fba5066e1163702fe346613df068fb9aa44e3b1ee92e4763eecef
+  sha1: sha256:2645511dbd9db59e55bd78f617481a94fbc3d4a4a14345f9b20ff7f53b34b504
+  dependencies: []
+license:
+  version: 16e4c2be65fa47859c0a2f40863170aba8a4b005b074e5be267b855b01907b6b
+  fingerprint: 16e4c2be65fa47859c0a2f40863170aba8a4b005b074e5be267b855b01907b6b
+  sha1: sha256:093d2a6149ba826882db94d4215d8ee1ed353cf9b3735d6a5df93cb25ecd7a56

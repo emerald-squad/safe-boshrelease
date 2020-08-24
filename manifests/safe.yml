@@ -92,6 +92,6 @@ stemcells:
 
 releases:
 - name:    safe
-  version: 1.2.0
-  url:     https://github.com/emerald-squad/safe-boshrelease/releases/download/v1.2.0/safe-1.2.0.tgz
-  sha1:    f7edf3eb4342f778e6df0cc93bc7d5a2848d8980
+  version: 1.2.1
+  url:     https://github.com/emerald-squad/safe-boshrelease/releases/download/v1.2.1/safe-1.2.1.tgz
+  sha1:    2ec4816a43e628cb846c3df902b908ffa8c3b101
